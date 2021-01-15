@@ -1,17 +1,22 @@
 import pygame as pg
 
-HEIGHT = 700
-WIDTH = 1000
+SCREEN_HEIGHT = 800
+SCREEN_WIDTH = 800
+
+UP = (0, 1)
+DOWN = (0, -1)
+LEFT = (-1, 0)
+RIGHT = (1, 0)
 
 
 class Snake(object):
     def __init__(self, color, width, height):
-        self.x, self.y = WIDTH/2, HEIGHT/2
+        self.x, self.y = SCREEN_WIDTH/2, SCREEN_HEIGHT/2
         self.color = color
         self.width = width
         self.height = height
 
-    def move(self):
+    def move(self, direction):
         pass
 
     def draw(self):
@@ -27,7 +32,7 @@ pg.init()
 pg.display.set_caption("Snake Game")
 clock = pg.time.Clock()
 running = True
-window = pg.display.set_mode((WIDTH, HEIGHT))
+window = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 window.fill((255, 255, 255))
 
 while running:
