@@ -1,2 +1,2 @@
 # snake
-The classical snake game
+The classic snake game
