@@ -21,11 +21,18 @@ class Snake(object):
         self.width = GRID_SIZE
         self.height = GRID_SIZE
 
+        self.length = 1
+        self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
+        self.score = 0
+
     def turn(self):
         pass
 
-    def move(self):
-        pass
+    def move(self, direction):
+        current_pos = self.get_head_position()
+        x, y = direction
+        new = ((current_pos[0] + (x * GRID_SIZE)), (current_pos[1] + (y * GRID_SIZE)))
+        self.x, self.y = new
 
     def get_head_position(self):
         return (self.x, self.y)
@@ -87,13 +94,13 @@ while running:
         
         elif event.type == pg.KEYDOWN:
             if event.key == pg.K_UP:
-                pass
+                snake.move(UP)
             elif event.key == pg.K_DOWN:
-                pass
+                snake.move(DOWN)
             elif event.key == pg.K_LEFT:
-                pass
+                snake.move(LEFT)
             elif event.key == pg.K_RIGHT:
-                pass
+                snake.move(RIGHT)
         
     snake.draw()
     food.draw()
