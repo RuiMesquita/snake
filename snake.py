@@ -34,7 +34,7 @@ class Snake(object):
     def move(self):
         current_pos = self.get_head_position()
         x, y = self.direction
-        new_pos = (((current_pos[0] + (x * GRID_SIZE))), (current_pos[1] + (y * GRID_SIZE)))
+        new_pos = (((current_pos[0] + (x * GRID_SIZE)) % SCREEN_WIDTH), (current_pos[1] + (y * GRID_SIZE)) % SCREEN_HEIGHT)
 
         if self.length > 2 and new_pos in self.positions:
             lose_screen()

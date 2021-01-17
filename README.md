@@ -1,2 +1,2 @@
 # snake
-The classic snake game
+Snake game made with pygame module
