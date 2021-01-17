@@ -16,7 +16,7 @@ RIGHT = (1, 0)
 
 class Snake(object):
     def __init__(self):
-        self.x, self.y = SCREEN_WIDTH/2, SCREEN_HEIGHT/2
+        self.positions = [(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)]
         self.color = (0, 0, 255)
         self.width = GRID_SIZE
         self.height = GRID_SIZE
@@ -25,20 +25,37 @@ class Snake(object):
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
         self.score = 0
 
-    def turn(self):
-        pass
+    def turn(self, direction):
+        if self.length > 1 and (direction[0] * -1, direction[1] * -1) == self.direction:
+            pass
+        else:
+            self.direction = direction
 
-    def move(self, direction):
+    def move(self):
         current_pos = self.get_head_position()
-        x, y = direction
-        new = ((current_pos[0] + (x * GRID_SIZE)), (current_pos[1] + (y * GRID_SIZE)))
-        self.x, self.y = new
+        x, y = self.direction
+        new_pos = (((current_pos[0] + (x * GRID_SIZE))), (current_pos[1] + (y * GRID_SIZE)))
 
+        if self.length > 2 and new_pos in self.positions:
+            lose_screen()
+            self.reset()
+        else:
+            self.positions.insert(0, new_pos)
+            if len(self.positions) > self.length:
+                self.positions.pop()
+            
     def get_head_position(self):
-        return (self.x, self.y)
+        return self.positions[0]
+
+    def reset(self):
+        self.positions = [(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)]
+        self.length = 1
+        self.score = 0
+        food.randomize_position()
 
     def draw(self):
-        pg.draw.rect(window, self.color, (int(self.x), int(self.y), self.width, self.height), 0)
+        for position in self.positions:
+            pg.draw.rect(window, self.color, (int(position[0]), int(position[1]), self.width, self.height), 0)
 
 
 class Food(object):
@@ -74,6 +91,23 @@ def draw_grid(surface):
                 pg.draw.rect(surface, (218, 247, 166), square)
 
 
+def lose_screen():
+    """
+    Shows a lose screen and waits for the user to restart the game
+    """
+    display_message_in_white("Press R to restart the game")
+    paused = True
+    while paused:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
+                quit() 
+
+            elif event.type == pg.KEYDOWN:
+                if event.key == pg.K_r:
+                    paused = False
+
+
 def text_objects(text, font):
     """
     Print text to a surface
@@ -82,9 +116,9 @@ def text_objects(text, font):
     return text_surface, text_surface.get_rect() 
 
 
-def pause_game():
+def display_message_in_white(message):
     """
-    Introduces an infinite loop in the game loop in order to pause tha game
+    Displays a message to the screen in a white box
     """
     large_text = pg.font.SysFont("Arial", 20)
     MENU_WIDTH, MENU_HEIGHT = 400, 200
@@ -93,12 +127,18 @@ def pause_game():
     pg.draw.rect(window, (255, 255, 255), shape, 0)
     pg.draw.rect(window, (0, 0, 0), shape, 2)
 
-    text_surf, text_rect = text_objects("Press ESC to resume", large_text)
+    text_surf, text_rect = text_objects(message, large_text)
     text_rect.center = ((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))
     window.blit(text_surf, text_rect)
 
     pg.display.update()
 
+
+def pause_game():
+    """
+    Introduces a infinite loop in the in order to pause the game
+    """
+    display_message_in_white("Press ESC to resume")
     paused = True
     while paused:
         for event in pg.event.get():
@@ -128,9 +168,12 @@ while running:
     draw_grid(window)
     pg.display.flip()
 
+    snake.move()
+
     if snake.get_head_position() == food.get_position():
         food.randomize_position()
         snake.score += 1
+        snake.length += 1
 
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -138,13 +181,13 @@ while running:
         
         elif event.type == pg.KEYDOWN:
             if event.key == pg.K_UP:
-                snake.move(UP)
+                snake.turn(UP)
             elif event.key == pg.K_DOWN:
-                snake.move(DOWN)
+                snake.turn(DOWN)
             elif event.key == pg.K_LEFT:
-                snake.move(LEFT)
+                snake.turn(LEFT)
             elif event.key == pg.K_RIGHT:
-                snake.move(RIGHT)
+                snake.turn(RIGHT)
             elif event.key == pg.K_ESCAPE:
                 pause_game()
         
@@ -155,4 +198,3 @@ while running:
     pg.display.update()
 
 pg.quit()
-
