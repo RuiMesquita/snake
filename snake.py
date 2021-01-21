@@ -1,3 +1,4 @@
+import main_menu
 import pygame as pg
 import random
 
@@ -154,6 +155,7 @@ snake = Snake()
 food = Food()
 
 pg.init()
+main_menu
 pg.display.set_caption("Snake Game")
 
 font = pg.font.Font("freesansbold.ttf", 17)
