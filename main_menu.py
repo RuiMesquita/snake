@@ -1,41 +1,47 @@
 import pygame
 
 SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 800
-
+SCREEN_HEIGHT = 600
 
 class Button(object):
     def __init__(self, position):
         self.position = position
-        self.color = (255, 0, 0)
+        self.color = (255, 195, 0)
         self.width, self.height = 300, 50
-        self.font = pygame.font.Font("freesansbold.ttf", 20)
     
-    def draw(self, label):
+    def draw(self):
         rect = pygame.Rect(self.position, (self.width, self.height))
-        text = self.font.render(label, 1, (0, 0, 0))
         pygame.draw.rect(screen, self.color, rect)
-        rect.blit(text, 20, 20)
         
     def blink(self):
         pass
     
 
-button_sp = Button((20, 20))
+button_sp = Button((SCREEN_WIDTH/2 - 150, 200))
+button_mp = Button((SCREEN_WIDTH/2 - 150, 300))
+button_exit = Button((SCREEN_WIDTH/2 - 150, 400))
 
 pygame.init()
+
+title_font = pygame.font.Font("freesansbold.ttf", 60)
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+screen.fill((218, 247, 166))
 pygame.display.set_caption("Main Menu")
 
 running = True
 while running:
-    button_sp.draw("SinglePlayer")
+    button_sp.draw()
+    button_mp.draw()
+    button_exit.draw()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             running = False
 
+    title = title_font.render(f"Snake Game", 0, (255, 255, 255))
+    title_centered = title.get_rect(center = (SCREEN_WIDTH/2, 80))
+    screen.blit(title, title_centered)
     pygame.display.update()
 
 pygame.quit()
