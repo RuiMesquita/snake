@@ -43,8 +43,12 @@ while running:
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
             running = False
+        
+        elif event.type == pygame.MOUSEBUTTONUP:
+            pos = pygame.mouse.get_pos()
+            if button_exit.rect.collidepoint(pos):
+                running = False
 
     title = title_font.render(f"Snake Game", 0, (255, 255, 255))
     title_centered = title.get_rect(center = (SCREEN_WIDTH/2, 80))
