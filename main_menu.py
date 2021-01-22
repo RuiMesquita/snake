@@ -3,7 +3,6 @@ import pygame
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
-
 class Button(object):
     def __init__(self, position, label):
         self.position = position
@@ -33,8 +32,8 @@ class Button(object):
                 return False
 
 
-button_sp = Button((SCREEN_WIDTH/2 - 150, 200), "SinglePlayer")
-button_mp = Button((SCREEN_WIDTH/2 - 150, 300), "MultiPlayer")
+button_play = Button((SCREEN_WIDTH/2 - 150, 200), "Play")
+button_controls = Button((SCREEN_WIDTH/2 - 150, 300), "Options")
 button_exit = Button((SCREEN_WIDTH/2 - 150, 400), "Exit")
 
 # Initialize pygame
@@ -47,9 +46,10 @@ screen.fill((218, 247, 166))
 pygame.display.set_caption("Main Menu")
 
 running = True
+option = ""
 while running:
-    button_sp.draw(label_font)
-    button_mp.draw(label_font)
+    button_play.draw(label_font)
+    button_controls.draw(label_font)
     button_exit.draw(label_font)
 
     for event in pygame.event.get():
@@ -63,24 +63,25 @@ while running:
         if event.type == pygame.MOUSEBUTTONUP:
             if button_exit.collision_point(pos):
                 running = False
-            elif button_sp.collision_point(pos):
+                option = "exit"
+            elif button_play.collision_point(pos):
                 running = False
-                print("Single player selected")
-            elif button_mp.collision_point(pos):
+                option = "play"
+            elif button_controls.collision_point(pos):
                 running = False
-                
+                option = "controls"
 
         # Creating the hover effect by checking the mouse position
         elif button_exit.collision_point(pos):
             button_exit.hovered = True
-        elif button_sp.collision_point(pos):
-            button_sp.hovered = True
-        elif button_mp.collision_point(pos):
-            button_mp.hovered = True
+        elif button_play.collision_point(pos):
+            button_play.hovered = True
+        elif button_controls.collision_point(pos):
+            button_controls.hovered = True
         else:
             button_exit.hovered = False
-            button_sp.hovered = False
-            button_mp.hovered = False
+            button_play.hovered = False
+            button_controls.hovered = False
 
     title = title_font.render(f"Snake Game", 0, (255, 255, 255))
     title_centered = title.get_rect(center = (SCREEN_WIDTH/2, 80))

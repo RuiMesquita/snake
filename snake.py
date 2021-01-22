@@ -1,6 +1,8 @@
 import main_menu
+import controls_menu
 import pygame as pg
 import random
+import sys
 
 SCREEN_HEIGHT = 800
 SCREEN_WIDTH = 800
@@ -151,13 +153,18 @@ def pause_game():
                 if event.key == pg.K_ESCAPE:
                     paused = False
 
-snake = Snake()
 food = Food()
 
 pg.init()
-main_menu
-pg.display.set_caption("Snake Game")
 
+if main_menu.option == "exit":
+    sys.exit()
+elif main_menu.option == "play":
+    snake = Snake()
+elif main_menu.option == "options":
+    controls_menu
+
+pg.display.set_caption("Snake Game")
 font = pg.font.Font("freesansbold.ttf", 17)
 
 clock = pg.time.Clock()
