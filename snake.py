@@ -1,6 +1,6 @@
-import main_menu
-import controls_menu
 import pygame as pg
+from main_menu import main_menu
+from controls_menu import controls_menu
 import random
 import sys
 
@@ -154,15 +154,20 @@ def pause_game():
                     paused = False
 
 food = Food()
+snake = Snake()
 
 pg.init()
 
-if main_menu.option == "exit":
-    sys.exit()
-elif main_menu.option == "play":
-    snake = Snake()
-elif main_menu.option == "options":
-    controls_menu
+# Menu management
+opt = main_menu()
+while opt != "play":
+    if opt == "exit":
+        quit()
+    elif opt == "controls":
+        opt2 = controls_menu()
+        while opt2 != "back":
+            opt2 = controls_menu()
+            pass
 
 pg.display.set_caption("Snake Game")
 font = pg.font.Font("freesansbold.ttf", 17)
