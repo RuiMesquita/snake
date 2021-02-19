@@ -1,6 +1,5 @@
 import pygame as pg
 from main_menu import main_menu
-from controls_menu import controls_menu
 import random
 import sys
 
@@ -162,12 +161,9 @@ pg.init()
 opt = main_menu()
 while opt != "play":
     if opt == "exit":
-        quit()
-    elif opt == "controls":
-        opt2 = controls_menu()
-        while opt2 != "back":
-            opt2 = controls_menu()
-            pass
+        sys.exit()
+    else:
+        pass
 
 pg.display.set_caption("Snake Game")
 font = pg.font.Font("freesansbold.ttf", 17)

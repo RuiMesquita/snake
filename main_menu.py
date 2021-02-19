@@ -1,10 +1,11 @@
 import pygame
+import sys
 
 
 def main_menu():
 
-    SCREEN_WIDTH = 800
-    SCREEN_HEIGHT = 600
+    SCREEN_WIDTH = 450
+    SCREEN_HEIGHT = 400
 
     class Button(object):
         def __init__(self, position, label):
@@ -36,8 +37,7 @@ def main_menu():
 
 
     button_play = Button((SCREEN_WIDTH/2 - 150, 200), "Play")
-    button_controls = Button((SCREEN_WIDTH/2 - 150, 300), "Options")
-    button_exit = Button((SCREEN_WIDTH/2 - 150, 400), "Exit")
+    button_exit = Button((SCREEN_WIDTH/2 - 150, 270), "Exit")
 
     # Initialize pygame
     pygame.init()
@@ -51,12 +51,12 @@ def main_menu():
     running = True
     while running:
         button_play.draw(label_font)
-        button_controls.draw(label_font)
         button_exit.draw(label_font)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                sys.exit()
             
             # keep track of the cursor position
             pos = pygame.mouse.get_pos()
@@ -69,21 +69,15 @@ def main_menu():
                 elif button_play.collision_point(pos):
                     running = False
                     return "play"
-                elif button_controls.collision_point(pos):
-                    running = False
-                    return "controls"
 
             # Creating the hover effect by checking the mouse position
             elif button_exit.collision_point(pos):
                 button_exit.hovered = True
             elif button_play.collision_point(pos):
                 button_play.hovered = True
-            elif button_controls.collision_point(pos):
-                button_controls.hovered = True
             else:
                 button_exit.hovered = False
                 button_play.hovered = False
-                button_controls.hovered = False
 
         title = title_font.render(f"Snake Game", 0, (255, 255, 255))
         title_centered = title.get_rect(center = (SCREEN_WIDTH/2, 80))
